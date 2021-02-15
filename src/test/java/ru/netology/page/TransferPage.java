@@ -1,31 +1,23 @@
 package ru.netology.page;
 
 import com.codeborne.selenide.SelenideElement;
+import ru.netology.data.DataHelper;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
-import static java.lang.String.valueOf;
-import static ru.netology.data.DataHelper.getFirstCard;
-import static ru.netology.data.DataHelper.getSecondCard;
 
 
 public class TransferPage {
 
-    private  SelenideElement amountField = $("[data-test-id=amount] input");
-    private SelenideElement fromField = $("[data-test-id=from] input");
-    private SelenideElement transferButton = $("[data-test-id=action-transfer]");
+    private final SelenideElement amountField = $("[data-test-id=amount] input");
+    private final SelenideElement fromField = $("[data-test-id=from] input");
+    private final SelenideElement transferButton = $("[data-test-id=action-transfer]");
 
-    public void transferMoneyFromFirstCard(int amount) {
-        amountField.setValue(valueOf(amount));
-        fromField.setValue(valueOf(getFirstCard()));
-        transferButton.click();
-        new DashboardPage();
-    }
 
-    public void transferMoneyFromSecondCard(int amount) {
-        amountField.setValue(valueOf(amount));
-        fromField.setValue(valueOf(getSecondCard()));
+    public void transferCard(DataHelper.CardInfo CardInfo, int amount) {
+        amountField.setValue(String.valueOf(amount));
+        fromField.setValue(CardInfo.getCardNumber());
         transferButton.click();
         new DashboardPage();
     }

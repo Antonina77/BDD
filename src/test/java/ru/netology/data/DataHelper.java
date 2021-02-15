@@ -1,30 +1,25 @@
 package ru.netology.data;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Value;
-import ru.netology.page.TransferPage;
 
 public class DataHelper {
-    public static TransferPage transferPage;
-
     private DataHelper() {
     }
 
     @Value
     public static class AuthInfo {
-        private String login;
-        private String password;
+        String login;
+        String password;
     }
 
     public static AuthInfo getAuthInfo() {
-
         return new AuthInfo("vasya", "qwerty123");
     }
 
     @Value
     public static class VerificationCode {
-        private String code;
+        String code;
     }
 
     public static VerificationCode getVerificationCodeFor(AuthInfo authInfo) {
@@ -32,20 +27,27 @@ public class DataHelper {
     }
 
     @Value
-    @Data
-    public static class Card {
-        private String number;
-        private int balance;
+    @AllArgsConstructor
+    public static class CardInfo {
+        String cardNumber;
+        String cardBalance;
     }
 
-    public static Card getFirstCard() {
-
-        return new Card("5559 0000 0000 0001", 10000);
+    public static CardInfo getFirstCardInfo() {
+        return new CardInfo("5559000000000001", "10000");
     }
 
-    public static Card getSecondCard() {
+    public static CardInfo getSecondCardInfo() {
+        return new CardInfo("5559000000000002", "10000");
+    }
 
-        return new Card("5559 0000 0000 0002", 10000);
+    public static int getBalanceOfFirstCardAfterTransfer(int balance, int amount) {
+        return balance - amount;
+
+    }
+
+    public static int getBalanceOfSecondCardAfterTransfer(int balance, int amount) {
+        return balance + amount;
     }
 
 }

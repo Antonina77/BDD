@@ -9,42 +9,43 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
 public class DashboardPage {
-    private SelenideElement heading = $("[data-test-id=dashboard]");
-    private static SelenideElement firstCardButton = $("[data-test-id='92df3f1c-a033-48e6-8390-206f6b1f56c0'] > .button");
-    private static SelenideElement secondCardButton = $("[data-test-id='0f3f5c2a-249e-4c3d-8287-09f7a039391d'] > .button");
+    private final ElementsCollection cardsInfo = $$(".list__item [data-test-id]");
+    private static final SelenideElement firstBalance = $("[data-test-id='92df3f1c-a033-48e6-8390-206f6b1f56c0'] .button");
+    private static final SelenideElement secondBalance = $("[data-test-id='0f3f5c2a-249e-4c3d-8287-09f7a039391d'] .button");
 
-    private ElementsCollection cards = $$(".list__item");
-    private final String balanceStart = "баланс: ";
-    private final String balanceFinish = " р.";
 
     public DashboardPage() {
+        SelenideElement heading = $("[data-test-id=dashboard]");
         heading.shouldBe(visible);
     }
 
-    public static TransferPage pushFirstCardButton() {
-        firstCardButton.click();
+
+    public TransferPage pushFirstCard() {
+        firstBalance.click();
         return new TransferPage();
     }
 
-    public static TransferPage pushSecondCardButton() {
-        secondCardButton.click();
+    public TransferPage pushSecondCard() {
+        secondBalance.click();
         return new TransferPage();
     }
 
-    public int getFirstCardBalance() {
-        val balance = cards.first().text();
-        return extractBalance(balance);
+    public int getCardBalanceFirstCard() {
+        val cardBalance = $(".list__item [data-test-id='92df3f1c-a033-48e6-8390-206f6b1f56c0']").getText();
+        return getExtractBalance(cardBalance);
     }
 
-    public int getSecondCardBalance() {
-        val balance = cards.last().text();
-        return extractBalance(balance);
+    public int getCardBalanceSecondCard() {
+        val cardBalance = $(".list__item [data-test-id='0f3f5c2a-249e-4c3d-8287-09f7a039391d']").getText();
+        return getExtractBalance(cardBalance);
     }
 
-    private int extractBalance(String balance) {
-        val start = balance.indexOf(balanceStart);
-        val finish = balance.indexOf(balanceFinish);
-        val value = balance.substring(start + balanceStart.length(), finish);
+    private int getExtractBalance(String cardBalance) {
+        String balanceStart = "баланс: ";
+        val start = cardBalance.indexOf(balanceStart);
+        String balanceFinish = " р.";
+        val finish = cardBalance.indexOf(balanceFinish);
+        val value = cardBalance.substring(start + balanceStart.length(), finish);
         return Integer.parseInt(value);
     }
 
